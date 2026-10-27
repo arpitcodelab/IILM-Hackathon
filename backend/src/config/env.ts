@@ -30,6 +30,7 @@ for (const p of envPaths) {
 export const env = {
   NODE_ENV: process.env.NODE_ENV || 'development',
   PORT: parseInt(process.env.PORT || '5000', 10),
+  DEMO_MODE: process.env.DEMO_MODE ? process.env.DEMO_MODE === 'true' : true, // Enabled by default in local dev, disabled when DEMO_MODE=false
   MONGODB_URI:
     process.env.MONGODB_URI ||
     'mongodb+srv://cloudskill7_db_user:69zOJCVuUGP6l5zB@aiprojects.sqdpyqi.mongodb.net/?retryWrites=true&w=majority',
@@ -37,6 +38,8 @@ export const env = {
   JWT_SECRET: process.env.JWT_SECRET || 'medibridge_super_secret_jwt_key_2026',
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || '7d',
   STORAGE_DIR: path.resolve(process.cwd(), 'storage', 'uploads'),
+  MEDINSIGHT_API_URL: process.env.MEDINSIGHT_API_URL || 'http://127.0.0.1:8000',
+  GENERICMEDS_API_URL: process.env.GENERICMEDS_API_URL || 'http://127.0.0.1:8001',
   GOOGLE_API_KEY: process.env.GOOGLE_API_KEY || '',
   OPENAI_API_KEY: process.env.OPENAI_API_KEY || '',
   CORS_ORIGIN: process.env.CORS_ORIGIN || 'http://127.0.0.1:5173',

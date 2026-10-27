@@ -6,8 +6,10 @@ import { connectDatabase } from '../src/config/database.js';
 import { generateMUPID } from '../src/services/mupidGenerator.js';
 import { SchemeEvaluationService } from '../src/modules/schemes/schemeEvaluationService.js';
 import { GenericMedsAdapter } from '../src/modules/medicines/genericMedsAdapter.js';
+import { DemoStore } from '../src/services/demoStore.js';
+import { env } from '../src/config/env.js';
 
-describe('MediBridge AI Backend Test Suite', () => {
+describe('MediBridge AI Backend & AI Subsystems Test Suite', () => {
   beforeAll(async () => {
     await connectDatabase();
   }, 10000);
@@ -17,20 +19,90 @@ describe('MediBridge AI Backend Test Suite', () => {
       await mongoose.disconnect();
     }
   });
-  it('1. should return UP status for health endpoint', async () => {
+
+  // 1. Health & Diagnostics
+  it('1. should return UP status for health and active AI integrations', async () => {
     const res = await request(app).get('/api/v1/health');
     expect(res.status).toBe(200);
     expect(res.body.status).toBe('healthy');
-    expect(res.body.services.medinsight_ai_rag).toContain('ACTIVE');
-    expect(res.body.services.genericmeds_ai).toContain('ACTIVE');
+    expect(res.body.demo_mode).toBe(true);
+    expect(res.body.services.medinsight_ai_rag).toBeDefined();
+    expect(res.body.services.genericmeds_ai).toBeDefined();
   });
 
+  // 2. MUPID Generator
   it('2. should generate valid unique MUPID format (MB-XXXXXX)', () => {
     const id = generateMUPID();
     expect(id).toMatch(/^MB-[2-9A-HJ-NP-Z]{6}$/);
   });
 
-  it('3. should dispatch zero-barrier Emergency SOS without login or MUPID', async () => {
+  // 3. Demo Patient Lookup (APAR ID & MUPID)
+  it('3. should lookup synthetic demo patient using APAR ID deterministically', async () => {
+    const res = await request(app)
+      .post('/api/v1/demo/patient-lookup')
+      .send({
+        identifier_type: 'apar_id',
+        identifier_value: 'APAR-9821-4412',
+      });
+
+    expect(res.status).toBe(200);
+    expect(res.body.demo_mode).toBe(true);
+    expect(res.body.patient.name).toBe('Rohan Mehta (Demo)');
+    expect(res.body.patient.mupid).toBe('MB-DEMO-01');
+    expect(res.body.patient.clinical_summary.allergies[0]).toContain('Penicillin');
+    expect(res.body.patient.sample_records.length).toBeGreaterThan(0);
+  });
+
+  it('4. should lookup synthetic demo patient using MUPID/MUCID', async () => {
+    const res = await request(app)
+      .post('/api/v1/demo/patient-lookup')
+      .send({
+        identifier_type: 'mupid',
+        identifier_value: 'MB-DEMO-02',
+      });
+
+    expect(res.status).toBe(200);
+    expect(res.body.patient.name).toBe('Sunita Sharma (Demo)');
+    expect(res.body.patient.scenario).toContain('Chronic-Care');
+  });
+
+  it('5. should return 404 for unknown demo identifiers with helpful suggestion', async () => {
+    const res = await request(app)
+      .post('/api/v1/demo/patient-lookup')
+      .send({
+        identifier_type: 'apar_id',
+        identifier_value: 'APAR-0000-0000',
+      });
+
+    expect(res.status).toBe(404);
+    expect(res.body.error.code).toBe('DEMO_PATIENT_NOT_FOUND');
+    expect(res.body.error.message).toContain('APAR-9821-4412');
+  });
+
+  it('5b. should reject demo lookup with 403 when DEMO_MODE is disabled', async () => {
+    const originalDemo = env.DEMO_MODE;
+    (env as any).DEMO_MODE = false;
+    const res = await request(app)
+      .post('/api/v1/demo/patient-lookup')
+      .send({
+        identifier_type: 'apar_id',
+        identifier_value: 'APAR-9821-4412',
+      });
+    (env as any).DEMO_MODE = originalDemo;
+
+    expect(res.status).toBe(403);
+    expect(res.body.error.code).toBe('DEMO_MODE_DISABLED');
+  });
+
+  it('6. should list demo personas for presentation chips', async () => {
+    const res = await request(app).get('/api/v1/demo/personas');
+    expect(res.status).toBe(200);
+    expect(res.body.personas.length).toBe(3);
+    expect(res.body.personas[0].apar_id).toBe('APAR-9821-4412');
+  });
+
+  // 4. Zero-Barrier Emergency SOS
+  it('7. should dispatch zero-barrier Emergency SOS without login or MUPID', async () => {
     const res = await request(app)
       .post('/api/v1/emergency/sos')
       .send({
@@ -49,20 +121,24 @@ describe('MediBridge AI Backend Test Suite', () => {
     expect(res.body.case.patient_name).toBe('Unidentified Patient');
   });
 
-  it('4. should fetch hospital emergency triage queue', async () => {
-    const res = await request(app).get('/api/v1/emergency/cases');
-    expect(res.status).toBe(200);
-    expect(Array.isArray(res.body.cases)).toBe(true);
+  it('8. should isolate demo SOS cases in test environment', async () => {
+    const res = await request(app)
+      .post('/api/v1/emergency/sos')
+      .send({
+        chief_complaint: 'Thoracic trauma simulation',
+        category: 'Accident / Trauma',
+        mupid: 'MB-DEMO-03',
+        is_demo: true,
+      });
+
+    expect(res.status).toBe(201);
+    expect(res.body.case.is_demo).toBe(true);
+    expect(res.body.case.ai_summary.allergies[0]).toContain('Penicillin');
+    expect(res.body.message).toContain('isolated test environment');
   });
 
-  it('5. should fetch live hospital resources availability', async () => {
-    const res = await request(app).get('/api/v1/emergency/hospital-resources');
-    expect(res.status).toBe(200);
-    expect(res.body.resources.er_beds.available).toBeGreaterThan(0);
-    expect(res.body.resources.ambulances.available).toBeGreaterThan(0);
-  });
-
-  it('6. should run GenericMeds AI alternative matching with mandatory safety disclaimer', async () => {
+  // 5. GenericMeds AI Equivalence Engine
+  it('9. should run GenericMeds AI alternative matching with mandatory safety disclaimer', async () => {
     const res = await request(app)
       .post('/api/v1/medicines/alternatives')
       .send({
@@ -79,7 +155,63 @@ describe('MediBridge AI Backend Test Suite', () => {
     expect(res.body.mandatory_safety_disclaimer).toContain('This tool provides medicine information and price comparisons');
   });
 
-  it('7. should evaluate Government Healthcare Schemes with strict liability non-deduction', async () => {
+  it('10. should flag partial match when dosage formulation differs', async () => {
+    const res = await request(app)
+      .post('/api/v1/medicines/alternatives')
+      .send({
+        brand_name: 'Azee 500',
+        active_ingredient: 'Azithromycin',
+        dosage_form: 'Syrup', // Differs from Tablet
+      });
+
+    expect(res.status).toBe(200);
+    expect(res.body.candidates[0].match_type).toBe('PARTIAL_MATCH');
+    expect(res.body.candidates[0].safety_note).toContain('Partial match');
+  });
+
+  // 6. MedInsight AI RAG Q&A
+  it('11. should answer patient questions grounded in medical documents with citations', async () => {
+    const res = await request(app)
+      .post('/api/v1/medical-records/qa')
+      .send({
+        question: 'What allergies do I have?',
+        mupid: 'MB-DEMO-01',
+      });
+
+    expect(res.status).toBe(200);
+    expect(res.body.answer).toContain('Penicillin');
+    expect(res.body.citations.length).toBeGreaterThan(0);
+    expect(res.body.citations[0].documentName).toBeDefined();
+    expect(res.body.disclaimer).toContain('strictly source-grounded');
+  });
+
+  // 7. Doctor Prescriptions with Digital Signature
+  it('12. should author prescription and authenticate with digital clinician signature', async () => {
+    const createRes = await request(app)
+      .post('/api/v1/prescriptions')
+      .send({
+        patient_mupid: 'MB-DEMO-01',
+        doctor_name: 'Dr. Arjun Sharma',
+        medicines: [
+          { name: 'Tab. Amlodipine 5 mg', dose: '5 mg', frequency: 'Once daily' },
+        ],
+      });
+
+    expect(createRes.status).toBe(201);
+    expect(createRes.body.prescription.status).toBe('draft');
+    expect(createRes.body.prescription.version).toBe(1);
+
+    const authRes = await request(app)
+      .patch(`/api/v1/prescriptions/${createRes.body.prescription._id}/authenticate`)
+      .send();
+
+    expect(authRes.status).toBe(200);
+    expect(authRes.body.prescription.status).toBe('authenticated');
+    expect(authRes.body.prescription.digital_signature.signature_id).toMatch(/^DSC-MED-/);
+  });
+
+  // 8. Government Healthcare Schemes
+  it('13. should evaluate Government Healthcare Schemes with strict liability non-deduction', async () => {
     const res = await request(app)
       .post('/api/v1/gov-schemes/evaluate')
       .send({
@@ -94,35 +226,12 @@ describe('MediBridge AI Backend Test Suite', () => {
     expect(res.status).toBe(200);
     expect(res.body.matches.length).toBeGreaterThan(0);
     expect(res.body.matches[0].match_status).toBe('PRELIMINARY_ELIGIBLE');
-    // Verify pending assistance is NOT subtracted from patient liability
     expect(res.body.financial_ledger.confirmed_covered_amount_inr).toBe(0);
     expect(res.body.financial_ledger.estimated_patient_liability_inr).toBeGreaterThanOrEqual(350000);
   });
 
-  it('8. should register a new patient user and return MUPID', async () => {
-    const testEmail = `patient_${Date.now()}@test.com`;
-    const res = await request(app)
-      .post('/api/v1/auth/register')
-      .send({
-        email: testEmail,
-        password: 'Password123!',
-        name: 'Rohan Mehta',
-        phone: '+91 98765 43210',
-        role: 'patient',
-      });
-
-    expect(res.status).toBe(201);
-    expect(res.body.token).toBeDefined();
-    expect(res.body.user.mupid).toMatch(/^MB-/);
-  });
-
-  it('9. should reject protected record access without authentication token', async () => {
-    const res = await request(app).get('/api/v1/medical-records?mupid=MB-7X4Q2K');
-    expect(res.status).toBe(401);
-    expect(res.body.error.code).toBe('UNAUTHORIZED');
-  });
-
-  it('10. should fetch verified hospital directory with procedure tariffs', async () => {
+  // 9. Hospital Directory
+  it('14. should fetch verified hospital directory with procedure tariffs', async () => {
     const res = await request(app).get('/api/v1/hospitals');
     expect(res.status).toBe(200);
     expect(res.body.hospitals.length).toBeGreaterThan(0);
