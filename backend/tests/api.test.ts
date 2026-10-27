@@ -165,6 +165,25 @@ describe('MediBridge AI Backend & AI Subsystems Test Suite', () => {
     expect(res.body.message).toContain('isolated test environment');
   });
 
+  // 4b. Multiple Medical Document Upload (MedInsight AI)
+  it('8b. should upload and batch parse multiple medical documents simultaneously', async () => {
+    const doc1 = Buffer.from('Patient: Rohan Mehta\nDiagnosis: Hypertension\nFasting Blood Glucose: 135 mg/dL\nAllergy: Penicillin');
+    const doc2 = Buffer.from('Patient: Rohan Mehta\nLab Test: Complete Blood Count\nHb: 14.2 g/dL\nWBC: 6,800 /mcL\nNormal findings');
+
+    const res = await request(app)
+      .post('/api/v1/medical-records/upload')
+      .field('mupid', 'MB-7X4Q2K')
+      .attach('documents', doc1, 'Metabolic_Panel.txt')
+      .attach('documents', doc2, 'CBC_Report.txt');
+
+    expect(res.status).toBe(201);
+    expect(res.body.count).toBe(2);
+    expect(res.body.records.length).toBe(2);
+    expect(res.body.records[0].original_name).toBe('Metabolic_Panel.txt');
+    expect(res.body.records[1].original_name).toBe('CBC_Report.txt');
+    expect(res.body.candidate_facts.length).toBeGreaterThan(0);
+  });
+
   // 5. GenericMeds AI Equivalence Engine
   it('9. should run GenericMeds AI alternative matching with mandatory safety disclaimer', async () => {
     const res = await request(app)

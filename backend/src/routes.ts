@@ -454,10 +454,20 @@ apiRouter.get('/emergency/hospital-resources', (req: Request, res: Response) => 
 // ==========================================
 // 5. MEDINSIGHT AI — DOCUMENT INTELLIGENCE & RAG
 // ==========================================
-apiRouter.post('/medical-records/upload', upload.single('document'), async (req: Request, res: Response) => {
+apiRouter.post('/medical-records/upload', upload.any(), async (req: Request, res: Response) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ error: { code: 'FILE_MISSING', message: 'Medical document file is required' } });
+    const rawFiles = req.files as Express.Multer.File[] | undefined;
+    const singleFile = (req as any).file as Express.Multer.File | undefined;
+    const files: Express.Multer.File[] = [];
+
+    if (Array.isArray(rawFiles) && rawFiles.length > 0) {
+      files.push(...rawFiles);
+    } else if (singleFile) {
+      files.push(singleFile);
+    }
+
+    if (files.length === 0) {
+      return res.status(400).json({ error: { code: 'FILE_MISSING', message: 'At least one medical document file is required' } });
     }
 
     // Extract authorization or allow demo upload
@@ -474,44 +484,56 @@ apiRouter.post('/medical-records/upload', upload.single('document'), async (req:
       ownerMupid = 'MB-DEMO-01'; // Default fallback in demo mode
     }
 
-    // Calculate sha256 checksum
-    const fileBuffer = fs.readFileSync(req.file.path);
-    const checksum = crypto.createHash('sha256').update(fileBuffer).digest('hex');
+    const savedRecords: any[] = [];
+    const allCandidateFacts: any[] = [];
 
-    // Run MedInsight AI extraction pipeline
-    const extraction = await MedInsightAdapter.processDocument(req.file.path, req.file.originalname, req.file.mimetype);
+    for (const file of files) {
+      // Calculate sha256 checksum
+      const fileBuffer = fs.readFileSync(file.path);
+      const checksum = crypto.createHash('sha256').update(fileBuffer).digest('hex');
 
-    const recordPayload = {
-      _id: `rec_${Date.now()}`,
-      owner_mupid: ownerMupid,
-      filename: req.file.filename,
-      original_name: req.file.originalname,
-      file_type: req.file.mimetype,
-      storage_path: req.file.path,
-      file_size_bytes: req.file.size,
-      sha256_checksum: checksum,
-      processing_status: 'ready',
-      processing_stages: extraction.processingStages,
-      extracted_text: extraction.extractedText,
-      candidate_facts: extraction.candidateFacts,
-      uncertainty_flags: extraction.uncertaintyFlags,
-      created_at: new Date(),
-    };
+      // Run MedInsight AI extraction pipeline
+      const extraction = await MedInsightAdapter.processDocument(file.path, file.originalname, file.mimetype);
 
-    if (isDbConnected()) {
-      const record = new MedicalRecord(recordPayload);
-      await record.save();
-      return res.status(201).json({
-        message: 'Medical document uploaded and parsed by MedInsight AI.',
-        record,
-      });
-    } else {
-      memoryMedicalRecords.unshift(recordPayload);
-      return res.status(201).json({
-        message: 'Medical document uploaded and parsed by MedInsight AI.',
-        record: recordPayload,
-      });
+      const recordPayload = {
+        _id: `rec_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+        owner_mupid: ownerMupid,
+        filename: file.filename,
+        original_name: file.originalname,
+        file_type: file.mimetype,
+        storage_path: file.path,
+        file_size_bytes: file.size,
+        sha256_checksum: checksum,
+        processing_status: 'ready' as const,
+        processing_stages: extraction.processingStages,
+        extracted_text: extraction.extractedText,
+        candidate_facts: extraction.candidateFacts,
+        uncertainty_flags: extraction.uncertaintyFlags,
+        created_at: new Date(),
+      };
+
+      if (isDbConnected()) {
+        const record = new MedicalRecord(recordPayload);
+        await record.save();
+        savedRecords.push(record);
+      } else {
+        memoryMedicalRecords.unshift(recordPayload);
+        savedRecords.push(recordPayload);
+      }
+
+      if (Array.isArray(extraction.candidateFacts)) {
+        allCandidateFacts.push(...extraction.candidateFacts);
+      }
     }
+
+    const docWord = savedRecords.length > 1 ? 'documents' : 'document';
+    return res.status(201).json({
+      message: `${savedRecords.length} medical ${docWord} uploaded and parsed by MedInsight AI.`,
+      count: savedRecords.length,
+      records: savedRecords,
+      record: savedRecords[0], // backward compatibility
+      candidate_facts: allCandidateFacts,
+    });
   } catch (err: any) {
     res.status(500).json({ error: { code: 'UPLOAD_FAILED', message: err.message } });
   }
