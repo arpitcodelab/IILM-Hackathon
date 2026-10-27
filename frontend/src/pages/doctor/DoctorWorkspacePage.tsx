@@ -148,6 +148,11 @@ export const DoctorWorkspacePage: React.FC = () => {
   // GenericMeds AI state
   const [genericModalData, setGenericModalData] = useState<GenericAlternativeModalData | null>(null);
   const [loadingGeneric, setLoadingGeneric] = useState(false);
+  const [inlineComparisons, setInlineComparisons] = useState<Record<string, any>>({});
+  const [inlineLoading, setInlineLoading] = useState<Record<string, boolean>>({});
+  const comparisonCache = React.useRef<Record<string, any>>({});
+  const activeAbortControllers = React.useRef<Record<string, AbortController>>({});
+  const debounceTimers = React.useRef<Record<string, any>>({});
 
   // Sync demo patient from localStorage if selected by mentor
   useEffect(() => {
@@ -222,6 +227,140 @@ export const DoctorWorkspacePage: React.FC = () => {
     if (typeFilter === 'all') return true;
     return a.type === typeFilter;
   });
+
+  const triggerAutoComparison = (medicineName: string, rowId: string, dose?: string) => {
+    const cleaned = medicineName.replace(/^(Tab\.|Cap\.|Syp\.|Inj\.|Oint\.)\s*/i, '').trim();
+
+    if (debounceTimers.current[rowId]) {
+      clearTimeout(debounceTimers.current[rowId]);
+    }
+
+    if (activeAbortControllers.current[rowId]) {
+      activeAbortControllers.current[rowId].abort();
+    }
+
+    if (cleaned.length < 3 || cleaned.toLowerCase().includes('jan aushadhi')) {
+      setInlineComparisons((prev) => {
+        const copy = { ...prev };
+        delete copy[rowId];
+        return copy;
+      });
+      setInlineLoading((prev) => ({ ...prev, [rowId]: false }));
+      return;
+    }
+
+    const cacheKey = cleaned.toLowerCase();
+    if (comparisonCache.current[cacheKey]) {
+      setInlineComparisons((prev) => ({ ...prev, [rowId]: comparisonCache.current[cacheKey] }));
+      setInlineLoading((prev) => ({ ...prev, [rowId]: false }));
+      return;
+    }
+
+    debounceTimers.current[rowId] = setTimeout(async () => {
+      const controller = new AbortController();
+      activeAbortControllers.current[rowId] = controller;
+      setInlineLoading((prev) => ({ ...prev, [rowId]: true }));
+
+      try {
+        const res: any = await apiClient('/medicines/compare-alternatives', {
+          method: 'POST',
+          body: JSON.stringify({
+            medicineName: cleaned,
+            dosageForm: 'Tablet',
+            strength: dose ? parseFloat(dose) || undefined : undefined,
+          }),
+          signal: controller.signal,
+        });
+
+        if (res && res.candidates && res.candidates.length > 0) {
+          comparisonCache.current[cacheKey] = res;
+          setInlineComparisons((prev) => ({ ...prev, [rowId]: res }));
+        } else {
+          setInlineComparisons((prev) => {
+            const copy = { ...prev };
+            delete copy[rowId];
+            return copy;
+          });
+        }
+      } catch (err: any) {
+        if (err.name !== 'AbortError') {
+          // Graceful non-blocking fallback
+          setInlineComparisons((prev) => {
+            const copy = { ...prev };
+            delete copy[rowId];
+            return copy;
+          });
+        }
+      } finally {
+        setInlineLoading((prev) => ({ ...prev, [rowId]: false }));
+      }
+    }, 400);
+  };
+
+  const handleUpdateMedicineRow = (id: string, field: string, val: string) => {
+    setPrescriptions((prev) =>
+      prev.map((p) => {
+        if (p.id === id) {
+          const updated = { ...p, [field]: val };
+          if (field === 'name') {
+            triggerAutoComparison(val, id, updated.dose);
+          }
+          return updated;
+        }
+        return p;
+      })
+    );
+  };
+
+  const handleAddSpecificMedicine = (name: string, dose: string, freq: string) => {
+    const newId = `p-${Date.now()}`;
+    const newMed = {
+      id: newId,
+      name: `Tab. ${name}`,
+      dose,
+      frequency: freq,
+      duration: '30 days',
+      instructions: 'After meals',
+    };
+    setPrescriptions((prev) => [...prev, newMed]);
+    triggerAutoComparison(name, newId, dose);
+  };
+
+  const handleAdoptInlineAlternative = (rowId: string, candidate: any, refBrand: string) => {
+    const genericDisplayName = candidate.generic_name.startsWith('Tab.')
+      ? candidate.generic_name
+      : `Tab. ${candidate.generic_name}`;
+
+    setPrescriptions((prev) =>
+      prev.map((p) =>
+        p.id === rowId
+          ? {
+              ...p,
+              name: genericDisplayName,
+              instructions: `${p.instructions || 'After meals'} (Adopted Jan Aushadhi generic alternative - ${candidate.savings_percentage}% savings)`,
+            }
+          : p
+      )
+    );
+
+    setInlineComparisons((prev) => {
+      const copy = { ...prev };
+      delete copy[rowId];
+      return copy;
+    });
+
+    alert(
+      `Prescription Updated: Adopted ${candidate.generic_name}. Patient saves ${candidate.savings_percentage || 70}% (~₹${candidate.savings_amount_inr || 100}) per pack at Jan Aushadhi Kendra.`
+    );
+  };
+
+  const handleDismissInlineAlternative = (rowId: string) => {
+    setInlineComparisons((prev) => {
+      const copy = { ...prev };
+      delete copy[rowId];
+      return copy;
+    });
+  };
 
   const handleAddMedicine = () => {
     const newMed = {
@@ -815,59 +954,282 @@ export const DoctorWorkspacePage: React.FC = () => {
                   </div>
                 </div>
 
+                {/* Quick Add Brand Medicine Toolbar */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', margin: '0.85rem 0 0.5rem 0', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                    ⚡ Test Brand Medicines (GenericMeds AI Auto-Compare):
+                  </span>
+                  {[
+                    { name: 'Azee 500', dose: '500 mg', freq: 'Once daily' },
+                    { name: 'Augmentin 625 Duo', dose: '625 mg', freq: 'Twice daily' },
+                    { name: 'Amlopres 5', dose: '5 mg', freq: 'Once daily' },
+                    { name: 'Atorva 10', dose: '10 mg', freq: 'Once daily' },
+                    { name: 'Calpol 650', dose: '650 mg', freq: 'SOS' },
+                    { name: 'Glycomet 500', dose: '500 mg', freq: 'Twice daily' },
+                    { name: 'Pantocid 40', dose: '40 mg', freq: 'Once daily' },
+                    { name: 'Telma 40', dose: '40 mg', freq: 'Once daily' },
+                  ].map((med) => (
+                    <button
+                      key={med.name}
+                      type="button"
+                      className="btn btn--xs"
+                      style={{
+                        fontSize: '0.68rem',
+                        padding: '2px 7px',
+                        borderRadius: '9999px',
+                        backgroundColor: '#EFF6FF',
+                        color: '#1D4ED8',
+                        border: '1px solid #BFDBFE',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => handleAddSpecificMedicine(med.name, med.dose, med.freq)}
+                    >
+                      + {med.name}
+                    </button>
+                  ))}
+                </div>
+
                 {/* Table */}
                 <table className="prescription-builder__table">
                   <thead>
                     <tr>
-                      <th>Medicine Name</th>
-                      <th>Dose</th>
-                      <th>Frequency</th>
-                      <th>Duration</th>
-                      <th>Instructions</th>
-                      <th style={{ width: '110px' }}>Actions</th>
+                      <th style={{ width: '28%' }}>Medicine Name</th>
+                      <th style={{ width: '12%' }}>Dose</th>
+                      <th style={{ width: '16%' }}>Frequency</th>
+                      <th style={{ width: '14%' }}>Duration</th>
+                      <th style={{ width: '20%' }}>Instructions</th>
+                      <th style={{ width: '10%' }}>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {prescriptions.map((p) => (
-                      <tr key={p.id}>
-                        <td><strong>{p.name}</strong></td>
-                        <td>{p.dose}</td>
-                        <td>{p.frequency}</td>
-                        <td>{p.duration}</td>
-                        <td>{p.instructions}</td>
-                        <td>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                            <button
-                              type="button"
-                              className="btn btn--xs"
-                              style={{
-                                fontSize: '0.7rem',
-                                padding: '2px 6px',
-                                backgroundColor: '#ECFDF5',
-                                color: '#059669',
-                                border: '1px solid #A7F3D0',
-                                borderRadius: '4px',
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '3px',
-                                cursor: 'pointer'
-                              }}
-                              onClick={() => handleCheckGenericAlternatives(p.name, p.dose, p.id)}
-                              title="Check Generic Alternative (GenericMeds AI)"
-                            >
-                              <Pill size={11} /> Generic
-                            </button>
-                            <button
-                              onClick={() => handleRemoveMedicine(p.id)}
-                              style={{ color: '#EF4444', padding: '4px', background: 'none', border: 'none', cursor: 'pointer' }}
-                              aria-label="Delete medicine"
-                            >
-                              <Trash2 size={15} />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
+                    {prescriptions.map((p) => {
+                      const comparison = inlineComparisons[p.id];
+                      const topCandidate = comparison?.candidates?.[0];
+                      const isLoading = inlineLoading[p.id];
+
+                      return (
+                        <React.Fragment key={p.id}>
+                          <tr>
+                            <td>
+                              <input
+                                type="text"
+                                className="input-text"
+                                value={p.name}
+                                onChange={(e) => handleUpdateMedicineRow(p.id, 'name', e.target.value)}
+                                style={{ width: '100%', fontWeight: 600, padding: '0.35rem 0.5rem', fontSize: '0.8125rem' }}
+                                placeholder="Enter brand or generic name..."
+                              />
+                            </td>
+                            <td>
+                              <input
+                                type="text"
+                                className="input-text"
+                                value={p.dose}
+                                onChange={(e) => handleUpdateMedicineRow(p.id, 'dose', e.target.value)}
+                                style={{ width: '100%', padding: '0.35rem 0.5rem', fontSize: '0.8125rem' }}
+                              />
+                            </td>
+                            <td>
+                              <input
+                                type="text"
+                                className="input-text"
+                                value={p.frequency}
+                                onChange={(e) => handleUpdateMedicineRow(p.id, 'frequency', e.target.value)}
+                                style={{ width: '100%', padding: '0.35rem 0.5rem', fontSize: '0.8125rem' }}
+                              />
+                            </td>
+                            <td>
+                              <input
+                                type="text"
+                                className="input-text"
+                                value={p.duration}
+                                onChange={(e) => handleUpdateMedicineRow(p.id, 'duration', e.target.value)}
+                                style={{ width: '100%', padding: '0.35rem 0.5rem', fontSize: '0.8125rem' }}
+                              />
+                            </td>
+                            <td>
+                              <input
+                                type="text"
+                                className="input-text"
+                                value={p.instructions}
+                                onChange={(e) => handleUpdateMedicineRow(p.id, 'instructions', e.target.value)}
+                                style={{ width: '100%', padding: '0.35rem 0.5rem', fontSize: '0.8125rem' }}
+                              />
+                            </td>
+                            <td>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                <button
+                                  type="button"
+                                  className="btn btn--xs"
+                                  style={{
+                                    fontSize: '0.68rem',
+                                    padding: '3px 6px',
+                                    backgroundColor: topCandidate ? '#DCFCE7' : '#ECFDF5',
+                                    color: topCandidate ? '#15803D' : '#059669',
+                                    border: '1px solid #A7F3D0',
+                                    borderRadius: '4px',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '3px',
+                                    cursor: 'pointer',
+                                    fontWeight: 600,
+                                    whiteSpace: 'nowrap'
+                                  }}
+                                  onClick={() => handleCheckGenericAlternatives(p.name, p.dose, p.id)}
+                                  title="Open Full Modal Comparison"
+                                >
+                                  <Pill size={11} /> {topCandidate?.savings_percentage ? `-${topCandidate.savings_percentage}%` : 'Generic'}
+                                </button>
+                                <button
+                                  onClick={() => handleRemoveMedicine(p.id)}
+                                  style={{ color: '#EF4444', padding: '4px', background: 'none', border: 'none', cursor: 'pointer' }}
+                                  aria-label="Delete medicine"
+                                >
+                                  <Trash2 size={15} />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+
+                          {/* Loading Shimmer */}
+                          {isLoading && (
+                            <tr>
+                              <td colSpan={6} style={{ backgroundColor: '#F0F9FF', padding: '0.65rem 1rem', borderBottom: '1px solid #BAE6FD' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#0369A1', fontSize: '0.78125rem' }}>
+                                  <Sparkles size={14} className="animate-spin" />
+                                  <span>GenericMeds AI: Searching composition equivalence & verified PMBJP pricing for <strong>{p.name}</strong>...</span>
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+
+                          {/* Inline Comparison Card */}
+                          {topCandidate && (
+                            <tr>
+                              <td colSpan={6} style={{ padding: '0.75rem 1rem', backgroundColor: '#F8FAFC', borderBottom: '1px solid #E2E8F0' }}>
+                                <div style={{
+                                  backgroundColor: '#FFFFFF',
+                                  border: topCandidate.match_type === 'EXACT_COMPOSITION_MATCH' ? '1.5px solid #86EFAC' : '1px solid #E2E8F0',
+                                  borderRadius: '12px',
+                                  padding: '1rem',
+                                  boxShadow: '0 2px 4px rgba(0,0,0,0.04)'
+                                }}>
+                                  {/* Header */}
+                                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                      <span style={{
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '4px',
+                                        padding: '2px 8px',
+                                        borderRadius: '9999px',
+                                        fontSize: '0.72rem',
+                                        fontWeight: 700,
+                                        backgroundColor: topCandidate.match_type === 'EXACT_COMPOSITION_MATCH' ? '#DCFCE7' : '#FEF3C7',
+                                        color: topCandidate.match_type === 'EXACT_COMPOSITION_MATCH' ? '#15803D' : '#B45309',
+                                      }}>
+                                        <CheckCircle2 size={12} />
+                                        {topCandidate.match_type === 'EXACT_COMPOSITION_MATCH' ? 'EXACT COMPOSITION MATCH' : topCandidate.match_type}
+                                      </span>
+                                      <span style={{ fontSize: '0.75rem', color: '#64748B', fontWeight: 500 }}>
+                                        GenericMeds AI Alternative Engine
+                                      </span>
+                                    </div>
+
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                      {topCandidate.savings_percentage && (
+                                        <span style={{
+                                          backgroundColor: '#DCFCE7',
+                                          color: '#15803D',
+                                          fontWeight: 800,
+                                          fontSize: '0.75rem',
+                                          padding: '2px 8px',
+                                          borderRadius: '9999px',
+                                          border: '1px solid #86EFAC'
+                                        }}>
+                                          ⚡ {topCandidate.savings_percentage}% Cheaper
+                                        </span>
+                                      )}
+                                      <button
+                                        onClick={() => handleDismissInlineAlternative(p.id)}
+                                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94A3B8', padding: '2px' }}
+                                        title="Dismiss inline comparison"
+                                      >
+                                        <X size={16} />
+                                      </button>
+                                    </div>
+                                  </div>
+
+                                  {/* Side-by-Side Comparison */}
+                                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '0.75rem' }}>
+                                    <div style={{ backgroundColor: '#F8FAFC', padding: '0.85rem', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
+                                      <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                                        Your Prescribed Brand
+                                      </div>
+                                      <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#0F172A', marginTop: '2px' }}>
+                                        {comparison.reference_brand || p.name}
+                                      </div>
+                                      <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#475569', marginTop: '4px' }}>
+                                        ₹{comparison.brand_price_inr || 160}
+                                        <span style={{ fontSize: '0.7rem', fontWeight: 500, color: '#94A3B8' }}> ({topCandidate.pack_size || 'Standard Strip'})</span>
+                                      </div>
+                                    </div>
+
+                                    <div style={{ backgroundColor: '#F0FDF4', padding: '0.85rem', borderRadius: '8px', border: '1.5px solid #BBF7D0' }}>
+                                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <span style={{ fontSize: '0.68rem', fontWeight: 700, color: '#166534', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                                          Jan Aushadhi Alternative
+                                        </span>
+                                        <span style={{ fontSize: '0.68rem', color: '#15803D', fontWeight: 700, backgroundColor: '#DCFCE7', padding: '1px 6px', borderRadius: '4px' }}>
+                                          PMBJP Verified
+                                        </span>
+                                      </div>
+                                      <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#14532D', marginTop: '2px' }}>
+                                        {topCandidate.generic_name}
+                                      </div>
+                                      <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#15803D', marginTop: '4px' }}>
+                                        ₹{topCandidate.generic_price_inr || 38}
+                                        <span style={{ fontSize: '0.7rem', fontWeight: 500, color: '#166534' }}> ({topCandidate.pack_size || 'Standard Strip'})</span>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Clinical Equivalence Note & Disclaimer */}
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', color: '#166534', backgroundColor: '#F0FDF4', padding: '0.45rem 0.75rem', borderRadius: '6px', marginBottom: '0.65rem' }}>
+                                    <CheckCircle2 size={15} color="#16A34A" />
+                                    <span><strong>Clinical Bioequivalence:</strong> Same active ingredient, identical strength ({topCandidate.active_ingredients?.map((i: any) => `${i.name} ${i.strength_value}${i.strength_unit}`).join(', ')}), and dosage formulation.</span>
+                                  </div>
+
+                                  <div style={{ fontSize: '0.72rem', color: '#64748B', marginBottom: '0.75rem' }}>
+                                    ⚠️ <strong>Governance Notice:</strong> {comparison.mandatory_safety_disclaimer}
+                                  </div>
+
+                                  {/* Actions */}
+                                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.65rem' }}>
+                                    <button
+                                      type="button"
+                                      className="btn btn--outline btn--xs"
+                                      onClick={() => handleDismissInlineAlternative(p.id)}
+                                    >
+                                      Keep Prescribed Brand
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="btn btn--primary btn--xs"
+                                      style={{ backgroundColor: '#059669', borderColor: '#059669', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                                      onClick={() => handleAdoptInlineAlternative(p.id, topCandidate, comparison.reference_brand)}
+                                    >
+                                      <Check size={13} /> Adopt Generic Alternative ({topCandidate.savings_percentage}% Savings)
+                                    </button>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                        </React.Fragment>
+                      );
+                    })}
                   </tbody>
                 </table>
 

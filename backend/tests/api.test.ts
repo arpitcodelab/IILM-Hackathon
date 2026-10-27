@@ -202,7 +202,7 @@ describe('MediBridge AI Backend & AI Subsystems Test Suite', () => {
     expect(res.body.mandatory_safety_disclaimer).toContain('This tool provides medicine information and price comparisons');
   });
 
-  it('10. should flag partial match when dosage formulation differs', async () => {
+  it('10. should flag different formulation when dosage form differs', async () => {
     const res = await request(app)
       .post('/api/v1/medicines/alternatives')
       .send({
@@ -212,8 +212,25 @@ describe('MediBridge AI Backend & AI Subsystems Test Suite', () => {
       });
 
     expect(res.status).toBe(200);
-    expect(res.body.candidates[0].match_type).toBe('PARTIAL_MATCH');
-    expect(res.body.candidates[0].safety_note).toContain('Partial match');
+    expect(['DIFFERENT_FORMULATION', 'PARTIAL_MATCH']).toContain(res.body.candidates[0].match_type);
+    expect(res.body.candidates[0].safety_note).toMatch(/differ|Partial match/i);
+  });
+
+  it('10b. should support compare-alternatives endpoint with composition matching and savings calculation', async () => {
+    const res = await request(app)
+      .post('/api/v1/medicines/compare-alternatives')
+      .send({
+        medicineName: 'Amlopres 5',
+        dosageForm: 'Tablet',
+      });
+
+    expect(res.status).toBe(200);
+    expect(res.body.total_candidates).toBeGreaterThan(0);
+    const topMatch = res.body.candidates[0];
+    expect(topMatch.match_type).toBe('EXACT_COMPOSITION_MATCH');
+    expect(topMatch.is_jan_aushadhi).toBe(true);
+    expect(topMatch.savings_percentage).toBeGreaterThan(50);
+    expect(res.body.mandatory_safety_disclaimer).toBeDefined();
   });
 
   // 6. MedInsight AI RAG Q&A

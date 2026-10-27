@@ -720,31 +720,40 @@ apiRouter.get('/medicines/search', async (req: Request, res: Response) => {
   }
 });
 
-apiRouter.post('/medicines/alternatives', async (req: Request, res: Response) => {
+const handleMedicineAlternatives = async (req: Request, res: Response) => {
   try {
-    const { brand_name, active_ingredient, strength_value, strength_unit, dosage_form, route, release_type } = req.body;
+    const brandName = req.body.medicineName || req.body.brand_name || req.body.name || '';
+    const activeIngredient = req.body.activeIngredient || req.body.active_ingredient;
+    const strengthVal = req.body.strength != null ? parseFloat(req.body.strength) : (req.body.strength_value != null ? parseFloat(req.body.strength_value) : undefined);
+    const strengthUnit = req.body.strengthUnit || req.body.strength_unit || 'mg';
+    const dosageForm = req.body.dosageForm || req.body.dosage_form;
+    const route = req.body.route;
+    const releaseType = req.body.releaseType || req.body.release_type;
 
-    if (!brand_name && !active_ingredient) {
+    if (!brandName && !activeIngredient) {
       return res.status(400).json({
-        error: { code: 'VALIDATION_ERROR', message: 'Either brand_name or active_ingredient must be provided' },
+        error: { code: 'VALIDATION_ERROR', message: 'Either medicineName (brand_name) or activeIngredient must be provided' },
       });
     }
 
     const result = await GenericMedsAdapter.findAlternatives(
-      brand_name || '',
-      active_ingredient,
-      strength_value,
-      strength_unit,
-      dosage_form,
+      brandName,
+      activeIngredient,
+      strengthVal,
+      strengthUnit,
+      dosageForm,
       route,
-      release_type
+      releaseType
     );
 
     res.json(result);
   } catch (err: any) {
     res.status(500).json({ error: { code: 'MATCHING_FAILED', message: err.message } });
   }
-});
+};
+
+apiRouter.post('/medicines/alternatives', handleMedicineAlternatives);
+apiRouter.post('/medicines/compare-alternatives', handleMedicineAlternatives);
 
 // ==========================================
 // 7. HOSPITALS, TARIFFS & DOCTORS
