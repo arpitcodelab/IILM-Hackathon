@@ -121,6 +121,34 @@ describe('MediBridge AI Backend & AI Subsystems Test Suite', () => {
     expect(res.body.case.patient_name).toBe('Unidentified Patient');
   });
 
+  it('7b. should reject Emergency SOS when chief complaint is missing (validation)', async () => {
+    const res = await request(app)
+      .post('/api/v1/emergency/sos')
+      .send({
+        incident_address: 'Sector 62, Noida',
+        reported_by: '+91 98765 11111',
+      });
+
+    expect(res.status).toBe(400);
+    expect(res.body.error.code).toBe('VALIDATION_ERROR');
+  });
+
+  it('7c. should assign priority high when patient is conscious', async () => {
+    const res = await request(app)
+      .post('/api/v1/emergency/sos')
+      .send({
+        chief_complaint: 'Severe ankle sprain / fracture',
+        category: 'Accident / Trauma',
+        is_conscious: true,
+        is_breathing: true,
+        incident_address: 'Sector 62, Noida',
+        reported_by: '+91 98765 11111',
+      });
+
+    expect(res.status).toBe(201);
+    expect(res.body.case.priority).toBe('high');
+  });
+
   it('8. should isolate demo SOS cases in test environment', async () => {
     const res = await request(app)
       .post('/api/v1/emergency/sos')
