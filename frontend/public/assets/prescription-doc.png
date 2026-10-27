@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 200" width="160" height="200">
+  <rect width="160" height="200" rx="8" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" />
+  <rect x="0" y="0" width="160" height="30" fill="#FEE2E2" />
+  <text x="12" y="20" fill="#DC2626" font-family="Inter, sans-serif" font-size="11" font-weight="700">PDF • Prescription</text>
+  <text x="20" y="70" fill="#1D4ED8" font-family="Georgia, serif" font-size="24" font-weight="bold">Rx</text>
+  <line x1="20" y1="90" x2="140" y2="90" stroke="#CBD5E1" stroke-width="2" />
+  <line x1="20" y1="110" x2="120" y2="110" stroke="#CBD5E1" stroke-width="2" />
+  <text x="12" y="160" fill="#64748B" font-family="Inter, sans-serif" font-size="10">03 May 2025</text>
+  <text x="12" y="178" fill="#0F172A" font-family="Inter, sans-serif" font-size="11" font-weight="600">Dr. Amit Verma</text>
+</svg>

@@ -1,0 +1,83 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.modal-content {
+  background-color: #FFFFFF;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-lg;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  @include custom-scrollbar;
+
+  &--lg {
+    max-width: 840px;
+  }
+
+  &--dark {
+    background-color: $color-dark-surface;
+    border: 1px solid $color-dark-border;
+    color: $color-dark-text;
+  }
+}
+
+.tabs-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid $color-border-subtle;
+  padding-bottom: 0.25rem;
+  overflow-x: auto;
+
+  &__item {
+    padding: 0.5rem 0.85rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $color-text-muted;
+    border-bottom: 2px solid transparent;
+    transition: all $transition-fast;
+    white-space: nowrap;
+
+    &:hover {
+      color: $color-text-main;
+    }
+
+    &--active {
+      color: $color-accent-blue;
+      border-bottom-color: $color-accent-blue;
+      font-weight: 600;
+    }
+  }
+
+  &--dark {
+    border-bottom-color: $color-dark-border;
+
+    .tabs-nav__item {
+      color: $color-dark-text-muted;
+
+      &:hover {
+        color: $color-dark-text;
+      }
+
+      &--active {
+        color: #FFFFFF;
+        border-bottom-color: $color-accent-blue-light;
+      }
+    }
+  }
+}
+

@@ -1,0 +1,65 @@
+@use '../abstracts/variables' as *;
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+
+  &__label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: $color-text-main;
+  }
+
+  &__helper {
+    font-size: 0.75rem;
+    color: $color-text-muted;
+  }
+
+  &__error {
+    font-size: 0.75rem;
+    color: $color-critical;
+    font-weight: 500;
+  }
+}
+
+.input-text, .input-select, .input-textarea {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.875rem;
+  background-color: #FFFFFF;
+  border: 1px solid $color-border-medium;
+  border-radius: $radius-sm;
+  color: $color-text-main;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+
+  &:focus {
+    border-color: $color-accent-blue;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  }
+
+  &::placeholder {
+    color: $color-text-light;
+  }
+
+  &--dark {
+    background-color: $color-dark-bg;
+    border-color: $color-dark-border;
+    color: $color-dark-text;
+
+    &:focus {
+      border-color: $color-accent-blue-light;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+    &::placeholder {
+      color: $color-dark-text-muted;
+    }
+  }
+}
+
+.input-textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+

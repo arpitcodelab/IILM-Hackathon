@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 480" width="600" height="480">
+  <defs>
+    <linearGradient id="herobg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EFF6FF" />
+      <stop offset="100%" stop-color="#DBEAFE" />
+    </linearGradient>
+  </defs>
+  <rect width="600" height="480" rx="24" fill="url(#herobg)" />
+  <circle cx="210" cy="180" r="70" fill="#FBBF24" />
+  <path d="M140 180 C140 130 170 100 210 100 C250 100 280 130 280 180 Z" fill="#1E293B" />
+  <circle cx="390" cy="190" r="68" fill="#FDE68A" />
+  <path d="M320 190 C320 120 350 95 390 95 C430 95 460 120 460 190 Z" fill="#3B0764" />
+  <circle cx="300" cy="300" r="50" fill="#FED7AA" />
+  <path d="M250 300 C250 250 270 230 300 230 C330 230 350 250 350 300 Z" fill="#9A3412" />
+  <path d="M120 460 C130 350 180 320 230 320 C280 320 310 350 330 460 Z" fill="#1D4ED8" />
+  <path d="M320 460 C340 360 380 330 430 330 C470 330 510 360 520 460 Z" fill="#7C3AED" />
+  <path d="M230 460 C240 390 270 370 300 370 C330 370 360 390 370 460 Z" fill="#10B981" />
+  <rect x="360" y="60" width="200" height="50" rx="12" fill="#FFFFFF" stroke="#E2E8F0" />
+  <text x="380" y="90" fill="#0F172A" font-family="Inter, sans-serif" font-size="13" font-weight="700">Trusted by 10,000+ Patients</text>
+</svg>

@@ -1,0 +1,45 @@
+# Standards of Medical Care in Diabetes — Diagnostic and Clinical Management Summary
+
+SOURCE METADATA:
+Title: Standards of Medical Care in Diabetes Management Summary
+Publisher: American Diabetes Association (ADA) / World Health Organization (WHO)
+Publication Date: 2024
+URL: https://diabetesjournals.org/care/issue/47/Supplement_1
+
+DIAGNOSTIC CRITERIA FOR DIABETES AND PRE-DIABETES:
+Diabetes mellitus is diagnosed through any of the following confirmed criteria:
+1. Fasting Plasma Glucose (FPG) >= 126 mg/dL (7.0 mmol/L). Fasting is defined as no caloric intake for at least 8 hours.
+2. Hemoglobin A1c (HbA1c) >= 6.5% (48 mmol/mol) performed using an NGSP-certified assay.
+3. 2-Hour Plasma Glucose >= 200 mg/dL (11.1 mmol/L) during a 75-g Oral Glucose Tolerance Test (OGTT).
+4. Random Plasma Glucose >= 200 mg/dL (11.1 mmol/L) in an individual with classic symptoms of hyperglycemia (polyuria, polydipsia, unexplained weight loss) or hyperglycemic crisis.
+
+Pre-diabetes (Impaired Glucose Regulation) is defined as:
+- Impaired Fasting Glucose (IFG): FPG 100 - 125 mg/dL (5.6 - 6.9 mmol/L).
+- Impaired Glucose Tolerance (IGT): 2-hour OGTT glucose 140 - 199 mg/dL (7.8 - 11.0 mmol/L).
+- Elevated HbA1c: 5.7% - 6.4% (39 - 47 mmol/mol).
+
+GLYCEMIC TARGETS FOR NON-PREGNANT ADULTS:
+- HbA1c: General adult target is < 7.0% (53 mmol/mol).
+- More stringent targets (< 6.5%) may be considered for younger individuals with short disease duration, no significant CVD, and low hypoglycemia risk.
+- Less stringent targets (< 8.0%) are appropriate for patients with severe hypoglycemia history, limited life expectancy, advanced microvascular or macrovascular complications, or high treatment burden.
+- Pre-prandial capillary plasma glucose target: 80 - 130 mg/dL (4.4 - 7.2 mmol/L).
+- Peak post-prandial capillary plasma glucose target: < 180 mg/dL (10.0 mmol/L).
+
+FIRST-LINE PHARMACOLOGICAL THERAPY:
+Metformin is the foundational initial pharmacotherapy for type 2 diabetes in the absence of specific contraindications.
+- Mechanism: Decreases hepatic glucose production and enhances peripheral insulin sensitivity.
+- Renal monitoring: Safe in mild to moderate renal impairment. Check eGFR prior to initiation. Contraindicated if eGFR < 30 mL/min/1.73m2. Dose reduction recommended if eGFR 30-44 mL/min/1.73m2.
+- Adverse effects: Gastrointestinal discomfort (nausea, diarrhea), potential vitamin B12 deficiency with long-term use.
+- Lactic acidosis: Rare but serious risk in acute hypoxemia, sepsis, or advanced renal failure.
+
+COMORBID CARDIOVASCULAR AND RENAL RISK AGENTS:
+In patients with type 2 diabetes and established Atherosclerotic Cardiovascular Disease (ASCVD), Heart Failure (HF), or Chronic Kidney Disease (CKD):
+- SGLT2 Inhibitors (e.g., Empagliflozin, Dapagliflozin): Demonstrated reduction in heart failure hospitalizations and renal disease progression. Monitoring: check volume status, mycotic genital infections, eGFR.
+- GLP-1 Receptor Agonists (e.g., Semaglutide, Liraglutide, Dulaglutide): Proven ASCVD risk reduction, substantial weight loss benefit, low intrinsic hypoglycemia risk. Monitoring: gastrointestinal tolerability, pancreatitis symptoms.
+
+ROUTINE PREVENTIVE SURVEILLANCE:
+1. HbA1c Testing: Every 3 months in patients not meeting glycemic targets; every 6 months in stable patients meeting goals.
+2. Diabetic Kidney Disease Screening: Annual urine albumin-to-creatinine ratio (uACR) and estimated GFR (eGFR).
+3. Diabetic Retinopathy Screening: Initial dilated and comprehensive eye examination by an optometrist or ophthalmologist at diagnosis, repeated annually or every 2 years if exams are normal.
+4. Comprehensive Foot Examination: Annual visual inspection, monofilament testing for loss of protective sensation, and pedal pulse palpation.
+5. Cardiovascular Risk Management: Annual lipid panel, blood pressure checks at every visit (target < 130/80 mmHg), and statin therapy indication based on cardiovascular risk.

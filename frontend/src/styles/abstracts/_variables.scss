@@ -1,0 +1,61 @@
+// MediBridge AI Design Tokens & Variables
+
+// Brand & Primary
+$color-primary: #0F766E;
+$color-primary-light: #14B8A6;
+$color-primary-subtle: #F0FDFA;
+$color-accent-blue: #2563EB;
+$color-accent-blue-light: #3B82F6;
+$color-accent-blue-subtle: #EFF6FF;
+
+// Neutrals & Surfaces
+$color-bg-app: #F8FAFC;
+$color-bg-card: #FFFFFF;
+$color-border-subtle: #E2E8F0;
+$color-border-medium: #CBD5E1;
+$color-text-main: #0F172A;
+$color-text-muted: #64748B;
+$color-text-light: #94A3B8;
+
+// Dark Shell Palette (For Hospital Emergency Command Panel)
+$color-dark-bg: #0B132B;
+$color-dark-surface: #111C38;
+$color-dark-card: #172554;
+$color-dark-border: #1E293B;
+$color-dark-text: #F8FAFC;
+$color-dark-text-muted: #94A3B8;
+
+// Clinical & Triage Statuses
+$color-critical: #EF4444;
+$color-critical-bg: #FEF2F2;
+$color-high: #F97316;
+$color-high-bg: #FFF7ED;
+$color-medium: #3B82F6;
+$color-medium-bg: #EFF6FF;
+$color-success: #10B981;
+$color-success-bg: #ECFDF5;
+$color-neutral-status: #64748B;
+$color-neutral-bg: #F1F5F9;
+
+// Typography
+$font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+$font-mono: 'JetBrains Mono', monospace;
+
+// Elevation & Shadows
+$shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.08);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+$shadow-emergency: 0 0 25px rgba(239, 68, 68, 0.25);
+
+// Radii
+$radius-xs: 4px;
+$radius-sm: 6px;
+$radius-md: 10px;
+$radius-lg: 16px;
+$radius-full: 9999px;
+
+// Transitions
+$transition-fast: 150ms ease-in-out;
+$transition-normal: 250ms ease-in-out;
+

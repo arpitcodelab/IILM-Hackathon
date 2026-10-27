@@ -1,0 +1,71 @@
+# Clinical Chemistry, Hematology, and Metabolic Laboratory Reference Ranges
+
+SOURCE METADATA:
+Title: Standard Clinical Diagnostic Laboratory Reference Ranges and Clinical Chemistry Interpretation
+Publisher: Consensus Clinical Pathology & Laboratory Medicine Guidelines
+Publication Date: 2024
+URL: https://www.aacc.org/clinical-guidelines
+
+COMPLETE BLOOD COUNT (CBC) REFERENCE RANGES (ADULT):
+- Hemoglobin (Hb):
+  * Adult Males: 13.5 - 17.5 g/dL (135 - 175 g/L)
+  * Adult Females: 12.0 - 15.5 g/dL (120 - 155 g/L)
+  * Clinical Flag: Values < 10.0 g/dL indicate moderate anemia; < 7.0 g/dL indicate severe anemia requiring urgent evaluation.
+- Hematocrit (Hct):
+  * Adult Males: 38.8% - 50.0%
+  * Adult Females: 34.9% - 44.5%
+- White Blood Cell (WBC) Count: 4.5 - 11.0 x 10^3/uL (4.5 - 11.0 x 10^9/L)
+  * Leukocytosis (> 11.0): Common causes include infection, systemic inflammation, acute physical stress, corticosteroid therapy.
+  * Leukopenia (< 4.0): Common causes include viral infections, autoimmune conditions, bone marrow suppression, medications.
+- Platelet Count: 150 - 450 x 10^3/uL
+  * Thrombocytopenia (< 150): Increased bleeding tendency if < 50; spontaneous bleeding risk if < 20.
+  * Thrombocytosis (> 450): Reactive thrombocytosis vs. primary myeloproliferative disorders.
+
+BASIC METABOLIC PANEL & RENAL FUNCTION:
+- Serum Sodium: 136 - 145 mEq/L (mmol/L)
+  * Hyponatremia (< 135): Syndrome of Inappropriate Antidiuretic Hormone (SIADH), heart failure, thiazide diuretic use.
+  * Hypernatremia (> 145): Dehydration, osmotic diuresis, diabetes insipidus.
+- Serum Potassium: 3.5 - 5.0 mEq/L (mmol/L)
+  * Hypokalemia (< 3.5): Loop/thiazide diuretics, GI losses. Risk of cardiac arrhythmias, muscle weakness.
+  * Hyperkalemia (> 5.0): Acute/chronic renal failure, ACE inhibitors, ARBs, potassium-sparing diuretics. Critical value > 6.0 mEq/L requiring emergency ECG and intervention.
+- Serum Chloride: 98 - 106 mEq/L (mmol/L)
+- Serum Bicarbonate / Total CO2: 22 - 29 mEq/L (mmol/L)
+- Blood Urea Nitrogen (BUN): 7 - 20 mg/dL (2.5 - 7.1 mmol/L)
+- Serum Creatinine:
+  * Adult Males: 0.7 - 1.3 mg/dL (62 - 115 umol/L)
+  * Adult Females: 0.5 - 1.1 mg/dL (44 - 97 umol/L)
+- Estimated Glomerular Filtration Rate (eGFR, CKD-EPI equation):
+  * Normal: > 90 mL/min/1.73m2
+  * Mild reduction (Stage 2 CKD): 60 - 89 mL/min/1.73m2
+  * Moderate reduction (Stage 3a/3b CKD): 30 - 59 mL/min/1.73m2 (medication dose adjustments often required)
+  * Severe reduction (Stage 4 CKD): 15 - 29 mL/min/1.73m2
+  * Kidney failure (Stage 5 CKD): < 15 mL/min/1.73m2
+
+LIPID PANEL REFERENCE VALUES (FASTING ADULT):
+- Total Cholesterol: Desirable < 200 mg/dL (5.18 mmol/L); Borderline high 200 - 239 mg/dL; High >= 240 mg/dL.
+- Low-Density Lipoprotein (LDL) Cholesterol:
+  * Optimal: < 100 mg/dL (2.59 mmol/L)
+  * In patients with established ASCVD or diabetes: Target < 70 mg/dL (1.81 mmol/L) or < 55 mg/dL for very high risk.
+  * Borderline high: 130 - 159 mg/dL; High: 160 - 189 mg/dL; Very high: >= 190 mg/dL.
+- High-Density Lipoprotein (HDL) Cholesterol:
+  * Men: Desirable > 40 mg/dL (1.04 mmol/L)
+  * Women: Desirable > 50 mg/dL (1.30 mmol/L)
+  * Low HDL (< 40 in men, < 50 in women) is an independent cardiovascular risk factor.
+- Fasting Serum Triglycerides:
+  * Normal: < 150 mg/dL (1.70 mmol/L)
+  * Borderline high: 150 - 199 mg/dL
+  * High: 200 - 499 mg/dL
+  * Very high: >= 500 mg/dL (significant risk of acute pancreatitis).
+
+LIVER FUNCTION & ENZYME TESTS:
+- Alanine Aminotransferase (ALT): 7 - 56 U/L (specific for hepatocellular injury)
+- Aspartate Aminotransferase (AST): 10 - 40 U/L
+- Alkaline Phosphatase (ALP): 44 - 147 U/L (marker of biliary obstruction, cholestasis, or bone turnover)
+- Total Bilirubin: 0.1 - 1.2 mg/dL (1.7 - 20.5 umol/L)
+- Serum Albumin: 3.5 - 5.0 g/dL (35 - 50 g/L)
+
+THYROID FUNCTION TESTS:
+- Thyroid Stimulating Hormone (TSH): 0.40 - 4.00 mIU/L (uIU/mL)
+  * Primary Hypothyroidism: Elevated TSH (> 4.5) with low or normal Free T4.
+  * Primary Hyperthyroidism: Suppressed TSH (< 0.1) with elevated Free T4 / Free T3.
+- Free Thyroxine (Free T4): 0.8 - 1.8 ng/dL (10 - 23 pmol/L)

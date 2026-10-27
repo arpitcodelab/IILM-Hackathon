@@ -1,0 +1,185 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.patient-dashboard-page {
+  padding: 2rem 0 4rem;
+
+  &__welcome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+
+    .emergency-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+      color: #FFFFFF;
+      padding: 0.65rem 1.35rem;
+      border-radius: $radius-full;
+      font-weight: 600;
+      font-size: 0.875rem;
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
+      transition: all $transition-fast;
+
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba(239, 68, 68, 0.45);
+      }
+    }
+  }
+
+  &__stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .stat-card {
+    background-color: #FFFFFF;
+    border: 1px solid $color-border-subtle;
+    border-radius: $radius-md;
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: $shadow-xs;
+
+    &__icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #F0FDFA;
+      color: $color-primary;
+    }
+
+    &__count {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: $color-text-main;
+      line-height: 1.1;
+    }
+
+    &__label {
+      font-size: 0.8125rem;
+      color: $color-text-muted;
+    }
+  }
+
+  &__content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.75rem;
+
+    @media (max-width: 1024px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // AI Health Summary Card
+  .ai-summary-card {
+    background-color: #FFFFFF;
+    border: 1px solid $color-border-subtle;
+    border-radius: $radius-md;
+    padding: 1.5rem;
+    box-shadow: $shadow-xs;
+
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    &__item {
+      padding: 0.85rem 1rem;
+      border-radius: $radius-sm;
+      background-color: #F8FAFC;
+      border: 1px solid $color-border-subtle;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  // Quick Action Grid
+  .quick-action-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem;
+
+    .action-button {
+      background-color: #FFFFFF;
+      border: 1px solid $color-border-subtle;
+      border-radius: $radius-sm;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.5rem;
+      transition: all $transition-fast;
+
+      &:hover {
+        border-color: $color-primary-light;
+        box-shadow: $shadow-sm;
+      }
+
+      .icon-box {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #EFF6FF;
+        color: $color-accent-blue;
+      }
+
+      span {
+        font-size: 0.8125rem;
+        font-weight: 500;
+        color: $color-text-main;
+      }
+    }
+  }
+}
+
+// Medicine Comparison Style
+.medicine-compare-card {
+  background-color: #FFFFFF;
+  border: 1px solid $color-border-subtle;
+  border-radius: $radius-md;
+  padding: 1.5rem;
+  box-shadow: $shadow-xs;
+  margin-bottom: 1.5rem;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 1.25rem 0;
+
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__box {
+    padding: 1.25rem;
+    border-radius: $radius-sm;
+    border: 1px solid $color-border-subtle;
+
+    &--generic {
+      background-color: #ECFDF5;
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+  }
+}
+

@@ -1,0 +1,30 @@
+@use '../abstracts/variables' as *;
+
+.card {
+  background-color: $color-bg-card;
+  border: 1px solid $color-border-subtle;
+  border-radius: $radius-md;
+  box-shadow: $shadow-xs;
+  padding: 1.25rem;
+  transition: box-shadow $transition-fast, border-color $transition-fast;
+
+  &--interactive {
+    cursor: pointer;
+    &:hover {
+      border-color: $color-border-medium;
+      box-shadow: $shadow-md;
+    }
+  }
+
+  &--elevated {
+    box-shadow: $shadow-md;
+  }
+
+  &--dark {
+    background-color: $color-dark-surface;
+    border-color: $color-dark-border;
+    color: $color-dark-text;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  }
+}
+

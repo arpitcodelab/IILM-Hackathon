@@ -1,0 +1,45 @@
+@use '../abstracts/variables' as *;
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: $radius-full;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+
+  &--critical {
+    background-color: $color-critical-bg;
+    color: #DC2626;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
+
+  &--high {
+    background-color: $color-high-bg;
+    color: #C2410C;
+    border: 1px solid rgba(249, 115, 22, 0.3);
+  }
+
+  &--medium {
+    background-color: $color-medium-bg;
+    color: #1D4ED8;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+  }
+
+  &--success {
+    background-color: $color-success-bg;
+    color: #047857;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+
+  &--neutral {
+    background-color: $color-neutral-bg;
+    color: #475569;
+    border: 1px solid $color-border-subtle;
+  }
+}
+

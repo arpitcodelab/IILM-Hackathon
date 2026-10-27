@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 200" width="160" height="200">
+  <rect width="160" height="200" rx="8" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" />
+  <rect x="0" y="0" width="160" height="30" fill="#FEE2E2" />
+  <text x="12" y="20" fill="#DC2626" font-family="Inter, sans-serif" font-size="11" font-weight="700">PDF • Blood Test</text>
+  <line x1="20" y1="60" x2="140" y2="60" stroke="#E2E8F0" stroke-width="6" />
+  <line x1="20" y1="80" x2="110" y2="80" stroke="#E2E8F0" stroke-width="6" />
+  <line x1="20" y1="100" x2="130" y2="100" stroke="#E2E8F0" stroke-width="6" />
+  <text x="12" y="160" fill="#64748B" font-family="Inter, sans-serif" font-size="10">10 May 2025</text>
+  <text x="12" y="178" fill="#0F172A" font-family="Inter, sans-serif" font-size="11" font-weight="600">CBC & Lipid Panel</text>
+</svg>

@@ -1,0 +1,19 @@
+brand_name,generic_name,dosage_form,administration_route,release_type,pack_size,pack_unit,price_inr,price_type,manufacturer,is_jan_aushadhi,composition,prescription_status
+Dolo 650,Paracetamol Tablets IP,Tablet,Oral,immediate-release,15,tablets,34.50,MRP,Micro Labs Ltd,False,Paracetamol 650mg,OTC
+Calpol 500,Paracetamol Tablets IP,Tablet,Oral,immediate-release,15,tablets,21.50,MRP,GlaxoSmithKline Pharmaceuticals,False,Paracetamol 500mg,OTC
+Augmentin 625 Duo,Amoxicillin and Potassium Clavulanate Tablets IP,Tablet,Oral,immediate-release,10,tablets,204.00,MRP,GlaxoSmithKline Pharmaceuticals,False,Amoxicillin 500mg + Potassium Clavulanate 125mg,Schedule H
+Glycomet 500 SR,Metformin Hydrochloride Prolonged-Release Tablets IP,Tablet,Oral,sustained-release,20,tablets,48.00,MRP,USV Private Ltd,False,Metformin 500mg,Schedule H
+Atorva 10,Atorvastatin Tablets IP,Tablet,Oral,immediate-release,15,tablets,115.00,MRP,Zydus Healthcare,False,Atorvastatin 10mg,Schedule H
+Amlopres 5,Amlodipine Tablets IP,Tablet,Oral,immediate-release,15,tablets,46.00,MRP,Cipla Ltd,False,Amlodipine 5mg,Schedule H
+Pan 40,Pantoprazole Gastro-Resistant Tablets IP,Tablet,Oral,modified-release,15,tablets,156.00,MRP,Alkem Laboratories,False,Pantoprazole 40mg,Schedule H
+Azee 500,Azithromycin Tablets IP,Tablet,Oral,immediate-release,5,tablets,120.00,MRP,Cipla Ltd,False,Azithromycin 500mg,Schedule H1
+Telma 40,Telmisartan Tablets IP,Tablet,Oral,immediate-release,15,tablets,132.00,MRP,Glenmark Pharmaceuticals,False,Telmisartan 40mg,Schedule H
+Okacet 10,Cetirizine Hydrochloride Tablets IP,Tablet,Oral,immediate-release,10,tablets,22.00,MRP,Cipla Ltd,False,Cetirizine 10mg,Schedule H
+Omez 20,Omeprazole Capsules IP,Capsule,Oral,modified-release,20,capsules,85.00,MRP,Dr. Reddy's Laboratories,False,Omeprazole 20mg,Schedule H
+Ciplox 500,Ciprofloxacin Tablets IP,Tablet,Oral,immediate-release,10,tablets,45.00,MRP,Cipla Ltd,False,Ciprofloxacin 500mg,Schedule H
+Voveran 50 GE,Diclofenac Gastro-Resistant Tablets IP,Tablet,Oral,modified-release,15,tablets,62.00,MRP,Novartis India,False,Diclofenac 50mg,Schedule H
+Amaryl 1mg,Glimepiride Tablets IP,Tablet,Oral,immediate-release,30,tablets,168.00,MRP,Sanofi India,False,Glimepiride 1mg,Schedule H
+Montair LC,Montelukast and Levocetirizine Hydrochloride Tablets,Tablet,Oral,immediate-release,10,tablets,195.00,MRP,Cipla Ltd,False,Montelukast 10mg + Levocetirizine 5mg,Schedule H
+Warf 5,Warfarin Tablets IP,Tablet,Oral,immediate-release,10,tablets,78.00,MRP,Cipla Ltd,False,Warfarin 5mg,Schedule H
+Tegretol CR 200,Carbamazepine Controlled-Release Tablets,Tablet,Oral,modified-release,10,tablets,42.00,MRP,Novartis India,False,Carbamazepine 200mg,Schedule H
+Human Mixtard 30/70 100IU/ml,Biphasic Isophane Insulin Injection IP,Injection,Subcutaneous,immediate-release,10,ml,185.00,MRP,Novo Nordisk,False,Insulin 100IU,Schedule H

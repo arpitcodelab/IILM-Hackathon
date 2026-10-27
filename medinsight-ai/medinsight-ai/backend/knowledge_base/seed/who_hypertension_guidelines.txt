@@ -1,0 +1,51 @@
+# World Health Organization (WHO) Guideline for the Pharmacological Treatment of Hypertension in Adults
+
+SOURCE METADATA:
+Title: WHO Guideline for the Pharmacological Treatment of Hypertension in Adults
+Publisher: World Health Organization (WHO)
+Publication Date: 2021
+URL: https://www.who.int/publications/i/item/9789240033986
+
+OVERVIEW AND DIAGNOSTIC CRITERIA:
+Hypertension is defined as persistent elevation of systemic arterial blood pressure where systolic blood pressure (SBP) is 140 mmHg or greater, or diastolic blood pressure (DBP) is 90 mmHg or greater, confirmed on repeated clinic visits or via standardized ambulatory/home blood pressure monitoring.
+Normal blood pressure is defined as SBP < 120 mmHg and DBP < 80 mmHg.
+Pre-hypertension / elevated blood pressure is defined as SBP 120-139 mmHg or DBP 80-89 mmHg.
+Stage 1 Hypertension is SBP 140-159 mmHg or DBP 90-99 mmHg.
+Stage 2 Hypertension is SBP >= 160 mmHg or DBP >= 100 mmHg.
+
+BLOOD PRESSURE THRESHOLD FOR INITIATION OF PHARMACOTHERAPY:
+WHO recommends initiation of pharmacological antihypertensive treatment in individuals with:
+1. Confirmed diagnosis of hypertension with SBP >= 140 mmHg or DBP >= 90 mmHg.
+2. SBP 130-139 mmHg in individuals with known cardiovascular disease (CVD).
+3. SBP 130-139 mmHg in individuals without CVD but with high cardiovascular risk (e.g., diabetes mellitus, chronic kidney disease).
+
+BLOOD PRESSURE TARGET GOALS:
+For all adults with hypertension without comorbidities, the recommended target blood pressure is SBP < 140 mmHg and DBP < 90 mmHg.
+For adults with hypertension and established cardiovascular disease, diabetes mellitus, or chronic kidney disease, WHO recommends a target SBP < 130 mmHg and DBP < 80 mmHg.
+
+FIRST-LINE PHARMACOTHERAPEUTIC AGENTS:
+WHO recommends any of the following three classes of antihypertensive medications as initial first-line pharmacological treatment:
+1. Thiazide or thiazide-like diuretics (e.g., Hydrochlorothiazide, Chlorthalidone, Indapamide).
+2. Angiotensin-converting enzyme inhibitors (ACE inhibitors, e.g., Lisinopril, Enalapril, Ramipril) OR Angiotensin receptor blockers (ARBs, e.g., Losartan, Telmisartan, Valsartan). Note: Dual combination of ACE inhibitor + ARB is contraindicated due to increased risk of renal dysfunction and hyperkalemia.
+3. Long-acting dihydropyridine Calcium Channel Blockers (CCBs, e.g., Amlodipine, Nifedipine GITS).
+
+COMBINATION THERAPY:
+WHO suggests initial combination therapy, preferably with a single-pill fixed-dose combination, in patients requiring two antihypertensive agents.
+Combination therapy is particularly recommended when baseline blood pressure is >= 20 mmHg above systolic target or >= 10 mmHg above diastolic target.
+Standard two-drug regimens combine an ACE inhibitor or ARB with either a dihydropyridine CCB or a thiazide diuretic.
+
+MONITORING AND FOLLOW-UP:
+Follow-up blood pressure should be assessed monthly after initiation or modification of antihypertensive medications until targets are reached.
+Once blood pressure targets are stable, follow-up intervals can be extended to every 3 to 6 months.
+Basic laboratory surveillance:
+- Serum electrolytes (sodium and potassium) and serum creatinine / eGFR must be checked prior to initiation and within 2 to 4 weeks of starting an ACE inhibitor, ARB, or diuretic.
+- Fasting blood glucose or HbA1c and lipid profile should be evaluated at baseline and annually.
+- Urinalysis for proteinuria / albuminuria to detect early hypertensive nephropathy.
+
+LIFESTYLE AND NON-PHARMACOLOGICAL MANAGEMENT:
+Lifestyle modifications are foundational for all individuals:
+- Dietary sodium reduction (< 2 g/day of sodium, corresponding to < 5 g/day of salt).
+- Healthy dietary pattern rich in fruits, vegetables, and low-fat dairy with reduced saturated fat.
+- Regular aerobic physical activity (at least 150 minutes of moderate-intensity activity per week).
+- Weight management to achieve and maintain a normal body mass index (18.5 - 24.9 kg/m2).
+- Cessation of tobacco use and moderation/avoidance of alcohol consumption.

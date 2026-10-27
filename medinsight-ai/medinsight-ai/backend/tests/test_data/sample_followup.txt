@@ -1,0 +1,57 @@
+FOLLOW-UP CONSULTATION
+======================
+
+Patient: Rajesh Kumar
+MRN: CGH-2025-4421
+Date: 01/09/2025
+Doctor: Dr. Anand Sharma
+
+FOLLOW-UP NOTES:
+Patient returns for follow-up after cardiac evaluation.
+
+REPORTS REVIEWED:
+- TMT: Positive for inducible ischemia at Stage 3
+- 2D Echo: LVEF 50%, mild LVH, Grade 1 diastolic dysfunction
+- No regional wall motion abnormality
+
+UPDATED VITAL SIGNS:
+- BP: 136/84 mmHg (improved)
+- Heart Rate: 82 bpm
+- SpO2: 97%
+
+UPDATED LABS (29/08/2025):
+- Fasting Blood Glucose: 138 mg/dL
+- HbA1c: 7.8% (same as previous)
+- Serum Creatinine: 1.4 mg/dL (slightly increased)
+- eGFR: 58 mL/min/1.73m²
+- BNP: 180 pg/mL (Normal: <100)
+- Urine Albumin-Creatinine Ratio: 45 mg/g (Normal: <30)
+
+ASSESSMENT:
+1. Positive TMT - inducible cardiac ischemia
+2. Mild LV diastolic dysfunction
+3. Worsening renal function - CKD Stage 3a progressing
+4. Microalbuminuria - diabetic nephropathy likely
+5. Diabetes - still not at target
+
+PLAN:
+- Referral to Cardiologist for coronary angiography
+- Start Clopidogrel 75mg daily
+- Continue Aspirin 75mg
+- Switch Amlodipine to Telmisartan 40mg + Amlodipine 5mg combination
+- Add Dapagliflozin 10mg (for cardiac and renal protection)
+- Reduce Metformin to 500mg BD given declining eGFR
+- Monitor renal function in 4 weeks
+- Low salt, low sugar, cardio-protective diet
+- Moderate exercise as tolerated
+
+MEDICATIONS UPDATED:
+1. Metformin 500mg BD
+2. Dapagliflozin 10mg OD
+3. Telmisartan 40mg + Amlodipine 5mg OD
+4. Atorvastatin 40mg HS
+5. Aspirin 75mg OD
+6. Clopidogrel 75mg OD
+
+Dr. Anand Sharma
+MD Internal Medicine

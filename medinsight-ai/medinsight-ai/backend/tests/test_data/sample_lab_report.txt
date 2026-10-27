@@ -1,0 +1,76 @@
+PATIENT MEDICAL REPORT
+=====================
+
+Patient Name: Rajesh Kumar
+Age: 52 years | Sex: Male
+Date of Visit: 15/08/2025
+Hospital: City General Hospital, Mumbai
+MRN: CGH-2025-4421
+
+CHIEF COMPLAINTS:
+- Persistent chest discomfort for the past 2 weeks
+- Shortness of breath on exertion
+- Fatigue and occasional dizziness
+
+MEDICAL HISTORY:
+- Type 2 Diabetes Mellitus - diagnosed 2018
+- Hypertension - diagnosed 2016
+- Hyperlipidemia - diagnosed 2020
+- No surgical history
+- Family history: Father had MI at age 58
+
+CURRENT MEDICATIONS:
+1. Metformin 500mg - twice daily
+2. Amlodipine 5mg - once daily
+3. Atorvastatin 20mg - once daily at bedtime
+4. Aspirin 75mg - once daily
+
+ALLERGIES:
+- Penicillin (causes rash)
+
+VITAL SIGNS:
+- Blood Pressure: 148/92 mmHg
+- Heart Rate: 88 bpm
+- Temperature: 98.4°F
+- SpO2: 96%
+- BMI: 28.3 kg/m²
+
+EXAMINATION FINDINGS:
+- Mild bilateral pedal edema
+- Heart sounds: S1, S2 normal, no murmurs
+- Lungs: Clear bilateral air entry
+- Abdomen: Soft, non-tender
+
+LABORATORY RESULTS (15/08/2025):
+- Fasting Blood Glucose: 156 mg/dL (Normal: 70-100)
+- HbA1c: 7.8% (Target: <7.0%)
+- Total Cholesterol: 232 mg/dL (Desirable: <200)
+- LDL Cholesterol: 148 mg/dL (Optimal: <100)
+- HDL Cholesterol: 38 mg/dL (Normal: >40)
+- Triglycerides: 230 mg/dL (Normal: <150)
+- Serum Creatinine: 1.3 mg/dL (Normal: 0.7-1.3)
+- eGFR: 62 mL/min/1.73m² (Normal: >90)
+- Hemoglobin: 13.2 g/dL (Normal: 13-17)
+- TSH: 3.8 mIU/L (Normal: 0.4-4.0)
+
+ECG: Normal sinus rhythm, non-specific ST-T wave changes in leads V4-V6
+
+IMPRESSION:
+1. Uncontrolled Type 2 Diabetes Mellitus
+2. Hypertension - not at target
+3. Dyslipidemia - not at target
+4. Chest discomfort - needs cardiac evaluation
+5. Early chronic kidney disease (Stage 3a)
+
+PLAN:
+- TMT (Treadmill Test) to evaluate cardiac status
+- 2D Echocardiography
+- Increase Metformin to 1000mg BD
+- Add Telmisartan 40mg for better BP control
+- Increase Atorvastatin to 40mg
+- Review in 2 weeks with test results
+- Dietary counseling and lifestyle modification advised
+
+Dr. Anand Sharma
+MD Internal Medicine
+Reg. No: MH-12345
